@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MineSweeper</title>
+    <link rel="stylesheet" type"text/css" href="../css/minesweeper.css">
+  </head>
+
+  <body>
+    <section class="high-scores">
+    </section>
+    <h1>Mine Sweeper</h1>
+    <figure class="minesweeper-game">
+    </figure>
+
+    <script src="../js/jquery-1.9.1.js"></script>
+    <script src="../js/minesweeper.js"></script>
+    <script src="../js/board.js"></script>
+    <script src="../js/tile.js"></script>
+
+    <script>
+      $(function(){
+        new MS.View($(".minesweeper-game"));
+      });
+    </script>
+  </body>
+</html>
