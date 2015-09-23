@@ -54,6 +54,15 @@
     return false
   };
 
+  Board.prototype.bombRevealed = function(){
+    this.minePositions.forEach(function(bomb){
+      if (this[bomb[0]][bomb[1]].revealed){
+        return true;
+      }
+    });
+    return false;
+  };
+
   Board.prototype.populateBoard = function(){
     for (var i = 0; i < MS.SIZE; i++){
       for (var j = 0; j < MS.SIZE; j++){

@@ -9,16 +9,18 @@
     this.$el.on("click", "li", (function(event){
       var $square = $(event.currentTarget);
       debugger
-      if (event.ctrlKey){
-        this.board.flagSquare($square)
-      } else {
-        this.board.makeMove($square)
-      }
+      // if (event.ctrlKey){
+      //   this.board.flagSquare($square)
+      // } else {
+      this.board.makeMove($square)
+      // }
       debugger
     }).bind(this));
   };
 
   MS.SIZE = 25;
+
+  View.prototype.hasWon = function(){};
 
   View.prototype.setupBoard = function(){
     debugger
