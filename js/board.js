@@ -3,6 +3,7 @@
 
   MS.NEIGHBORSDELTAS = [[-1,-1],[-1,0],[-1,1],[0,1],[1,0],[1,1],[1,-1],[0,-1]];
   MS.NUMBERS = 25;
+  MS.SIZE = 25;
 
   Board = MS.Board = function (){
     this.grid();
@@ -20,24 +21,28 @@
   };
 
   Board.prototype.numNeighborBombs = function (pos) {
-    numBombs = 0
-    neighbors(pos).each do |n_pos|
-      num_bombs += 1 if mine_positions.include?(n_pos)
-    end
-    num_bombs
+    var numBombs = 0
+    this.neighbors(pos).forEach(function(nPos){
+      if (this.minePositions.indexOf(npos) !== -1){
+        numBombs += 1
+      }
+    });
+    return numBombs
   };
 
-  Board.prototype.neighbors = function () {
+  Board.prototype.neighbors = function (pos) {
     var x = pos[0];
     var y = pos[1];
-    var new_pos_list = [];
-    NEIGHBORSDELTAS.forEach(function(change){
+    var newPosList = [];
+    MS.NEIGHBORSDELTAS.forEach(function(change){
+      // debugger
       var dx = change[0];
       var dy = change[1];
-      newPosList << [x + dx, y + dy]
+      newPosList.push([x + dx, y + dy]);
     });
-
-    newPosList.select(function(el){inBoard(el)});
+    // debugger
+    // newPosList.select(this.inBoard(el));
+    return newPosList.select(function(el){ if(el[0] >= 0 && el[0] < 25 && el[1] >= 0 && el[1] < 25){return true}; return false });
   };
 
   Board.prototype.inBoard = function(pos){
@@ -53,23 +58,23 @@
     for (var i = 0; i < MS.SIZE; i++){
       for (var j = 0; j < MS.SIZE; j++){
         has_bomb = false
-        if list.indexOf([i, j] !== -1){
+        if (this.minePositions.indexOf([i, j] !== -1)){
           has_bomb = true
         }
-        grid[i][j] = new MS.Tile(has_bomb, numNeighborBombs([i, j]);
+        grid[i][j] = new MS.Tile(has_bomb, numNeighborBombs([i, j]));
       }
     }
 
   };
 
   Board.prototype.generateMinePositions = function(){
-    this.minePosition = [];
+    this.minePositions = [];
 
-    while (this.minePosition.length < MS.NUMBERS){
+    while (this.minePositions.length < MS.NUMBERS){
       var xPos = Math.floor(Math.random() * MS.SIZE);
       var yPos = Math.floor(Math.random() * MS.SIZE);
-      if (this.minePosition.indexOf([xPos, yPos] === -1)){
-        this.minePosition.push([xPos, yPos]);
+      if (this.minePositions.indexOf([xPos, yPos] === -1)){
+        this.minePositions.push([xPos, yPos]);
       }
     };
   };
