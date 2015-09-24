@@ -77,6 +77,6 @@ li:hover {
   background-color: white;
 }
 
-.revealed:after {
-  content: "r";
+.bomb {
+  background-color: black;
 }

@@ -9,6 +9,8 @@
     this.$el.on("click", "li", this.clickHandle.bind(this));
   };
 
+  MS.SIZE = 25;
+
   View.prototype.clickHandle = function(event){
     event.preventDefault();
     var $tile = $(event.currentTarget);
@@ -36,8 +38,14 @@
       $tile.toggleClass("flagged");
       tile.flagged = tile.flagged === true ? false : true;
     }
+    if(tile.hasBomb && !flagged){
+      this.revealAll(tile, $tile);
+      this.$el.off("click");
+      this.$el.addClass("frozen");
+      alert("game lost");
+    }
   //  if(tile.flagged){
-    if(!tile.flagged){
+    if(!tile.flagged && !flagged){
       this.reveal($tile, pos);
     }
     if(this.hasWon()){
@@ -48,25 +56,38 @@
     }
   }
 
-  MS.SIZE = 25;
-
   View.prototype.hasWon = function(){
+    var count = 0;
+    for (var i = 0; i < MS.SIZE; i++){
+      for (var j = 0; j < MS.SIZE; j++){
+        var tile = this.board.grid[i][j];
+        if(tile.hasBomb && tile.flagged){
+          count += 1;
+        }
+      }
+    }
+    if (count === MS.NUMBERS){
+      return true
+    }
    //  all bomb tiles flagged, all other tiles revealed
    return false
   };
 
   View.prototype.reveal = function($tile, pos){
-    debugger
     var tile = this.board.grid[pos[0]][pos[1]];
 
     if (tile.flagged){
       return
-    }
+    };
 
     tile.revealed = true;
     // debugger
     $tile.addClass('revealed');
+
     $tile.attr("bombNum", tile.numBombs);
+    if (tile.numBombs !== 0) {
+      $tile.text(tile.numBombs);
+    };
     // debugger
 
     if (tile.numBombs === 0 && !tile.hasBomb){
@@ -82,6 +103,22 @@
         if(!nextTile.hasBomb && !nextTile.revealed){
           this.reveal($nextTile, neighbors[i]);
         }
+      }
+    }
+
+  };
+
+  View.prototype.revealAll = function(){
+    for (var i = 0; i < MS.SIZE; i++){
+      for (var j=0; j < MS.SIZE; j++){
+        var tile = this.board.grid[i][j];
+        var count = i * 25 + j + 1;
+        var $tile = this.$el.find("li:nth-child("+ count +")");
+        if(tile.hasBomb){
+          $tile.addClass("bomb");
+        } else {
+          $tile.addClass("revealed");
+        };
       }
     }
 
