@@ -66,3 +66,17 @@ li:hover {
 .frozen li:hover{
   background: gray;
 }
+
+.revealed {
+  cursor: default;
+  color: black;
+  background-color: white;
+}
+
+.revealed:hover {
+  background-color: white;
+}
+
+.revealed:after {
+  content: "r";
+}

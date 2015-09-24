@@ -2,7 +2,7 @@
   window.MS = window.MS || {}
 
   MS.NEIGHBORSDELTAS = [[-1,-1],[-1,0],[-1,1],[0,1],[1,0],[1,1],[1,-1],[0,-1]];
-  MS.NUMBERS = 25;
+  MS.NUMBERS = 100;
   MS.SIZE = 25;
 
   Board = MS.Board = function (){
@@ -26,10 +26,12 @@
     var that = this;
     var neighbors = this.neighbors(pos);
     for(var i = 0; i < neighbors.length; i++){
-      if(this.minePositions.indexOf(neighbors[i]) !== -1){
+
+      if(this.minePositions.includes(neighbors[i])){
         numBombs += 1;
       }
     }
+    
     return numBombs
   };
 
@@ -69,13 +71,12 @@
     for (var i = 0; i < MS.SIZE; i++){
       for (var j = 0; j < MS.SIZE; j++){
         has_bomb = false
-        if (this.minePositions.indexOf([i, j]) !== -1){
-          has_bomb = true
-        }
+        if (this.minePositions.includes([i,j])) {
+          has_bomb = true;
+        };
         this.grid[i][j] = new MS.Tile(has_bomb, this.numNeighborBombs([i, j]));
       }
     }
-
   };
 
   Board.prototype.generateMinePositions = function(){
@@ -92,7 +93,7 @@
 
   Array.prototype.includes = function(val){
     for (var i = 0; i < this.length; i ++) {
-      if (this[i] === val){
+      if (this[i][0] === val[0] && this[i][1] === val[1]){
         return true
       }
     }
