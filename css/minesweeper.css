@@ -51,3 +51,18 @@ li {
 li:hover {
   background: darkgray;
 }
+
+.flagged {
+  color: red;
+}
+.flagged:after {
+  content: "x";
+}
+
+.frozen li{
+  cursor: default;
+}
+
+.frozen li:hover{
+  background: gray;
+}

@@ -8,6 +8,7 @@
   Board = MS.Board = function (){
     this.grid();
     this.generateMinePositions();
+    this.populateBoard();
   }
 
   Board.prototype.grid = function(){
@@ -22,11 +23,13 @@
 
   Board.prototype.numNeighborBombs = function (pos) {
     var numBombs = 0
-    this.neighbors(pos).forEach(function(nPos){
-      if (this.minePositions.indexOf(npos) !== -1){
-        numBombs += 1
+    var that = this;
+    var neighbors = this.neighbors(pos);
+    for(var i = 0; i < neighbors.length; i++){
+      if(this.minePositions.indexOf(neighbors[i]) !== -1){
+        numBombs += 1;
       }
-    });
+    }
     return numBombs
   };
 
@@ -40,7 +43,6 @@
       var dy = change[1];
       newPosList.push([x + dx, y + dy]);
     });
-    // debugger
     // newPosList.select(this.inBoard(el));
     return newPosList.select(function(el){ if(el[0] >= 0 && el[0] < 25 && el[1] >= 0 && el[1] < 25){return true}; return false });
   };
@@ -67,10 +69,10 @@
     for (var i = 0; i < MS.SIZE; i++){
       for (var j = 0; j < MS.SIZE; j++){
         has_bomb = false
-        if (this.minePositions.indexOf([i, j] !== -1)){
+        if (this.minePositions.indexOf([i, j]) !== -1){
           has_bomb = true
         }
-        grid[i][j] = new MS.Tile(has_bomb, numNeighborBombs([i, j]));
+        this.grid[i][j] = new MS.Tile(has_bomb, this.numNeighborBombs([i, j]));
       }
     }
 
@@ -86,10 +88,6 @@
         this.minePositions.push([xPos, yPos]);
       }
     };
-  };
-
-  Board.prototype.neighbors = function (pos) {
-
   };
 
   Array.prototype.includes = function(val){
